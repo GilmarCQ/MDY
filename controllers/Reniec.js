@@ -1,9 +1,11 @@
 const axios = require('axios');
+const URL_API_RENIEC = 'https://ws5.pide.gob.pe/Rest/Reniec';
 
 const getPerson = (req, res) => {
-    axios.get('https://ws5.pide.gob.pe/Rest/Reniec/Consultar?nuDniConsulta=29552154&nuDniUsuario=72690553&nuRucUsuario=20173809663&password=72690553')
+    const body = req.query;
+    console.log(body);
+    axios.get(`${URL_API_RENIEC}/Consultar?nuDniConsulta=${body.dniConsulta}&nuDniUsuario=${body.dniUsuario}&nuRucUsuario=${body.ruc}&password=${body.password}`)
     .then(response => {
-        console.log(response);
         res.status(200).json({
             ok: true,
             contenido: response.data
