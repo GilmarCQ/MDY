@@ -10,10 +10,11 @@ const { sunarpRouter } = require('../routes/Sunarp');
 class Server {
     constructor() {
         this.app = express();
+        this.app.use(cors());
         this.puerto = process.env.PORT || 5000;
+        // this.habilitarCors();
         this.configureBodyParser();
         this.chargeRoutes();
-        this.habilitarCors();
     }
 
     habilitarCors() {
