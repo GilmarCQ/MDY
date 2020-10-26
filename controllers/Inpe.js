@@ -1,6 +1,9 @@
 const axios = require('axios');
 const URL_API_INPE = 'https://ws3.pide.gob.pe/Rest/Inpe';
 
+/**
+ * Consulta los anteceentes penales de una persona mediante nombres y apellidos
+ */
 const getAntecedentes = (req, res) => {
     const body = req.query;
     console.log(body);
