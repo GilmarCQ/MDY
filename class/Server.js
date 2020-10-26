@@ -13,6 +13,7 @@ class Server {
         this.puerto = process.env.PORT || 5000;
         this.configureBodyParser();
         this.chargeRoutes();
+        this.habilitarCors();
     }
 
     habilitarCors() {
