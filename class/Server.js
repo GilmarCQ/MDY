@@ -7,6 +7,8 @@ const { reniecRouter } = require('../routes/Reniec');
 const { inpeRouter } = require('../routes/Inpe');
 const { mineduRouter } = require('../routes/Minedu');
 const { sunarpRouter } = require('../routes/Sunarp');
+const { entidadRouter } = require('../routes/Entidad');
+const { conexion } = require('../config/Sequelize');
 
 class Server {
     constructor() {
@@ -32,14 +34,17 @@ class Server {
     }
     chargeRoutes() {
         this.app.get('/', (req, res) => res.status(200).send('La API FUNCIONA... Api Mdy Amachay'));
-        // this.app.use('/employe', employeRouter);
         this.app.use('/reniec', reniecRouter);
         this.app.use('/inpe', inpeRouter);
         this.app.use('/minedu', mineduRouter);
         this.app.use('/sunarp', sunarpRouter);
+        this.app.use('/entidad', entidadRouter);
     }
     start() {
-        this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`))
+        this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`));
+        conexion.sync({force: false}).then(() => {
+            console.log("Base de Datos Sincronizada")
+        })
     }
 }
 
