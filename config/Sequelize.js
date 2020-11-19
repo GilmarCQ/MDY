@@ -3,6 +3,7 @@ const Sequelize = require('sequelize');
 const personaModel = require('../models/Persona');
 const libroIncidenciasModel = require('../models/LibroIncidencias');
 const entidadModel = require('../models/Entidad');
+const sedeModel = require('../models/Sede');
 
 const conexion = new Sequelize(
     'mdyDB', 'mdy', 'qazWSX123456', {
@@ -11,6 +12,13 @@ const conexion = new Sequelize(
         port: 5432
     }
 );
+// const conexion = new Sequelize(
+//     'mdy_apps', 'postgres', 'root', {
+//         host: 'localhost',
+//         dialect: 'postgres',
+//         port: 5432
+//     }
+// );
 
 // try {
 //     await conexion.authenticate();
@@ -22,10 +30,17 @@ const conexion = new Sequelize(
 const Persona = personaModel(conexion);
 const LibroIncidencias = libroIncidenciasModel(conexion);
 const Entidad = entidadModel(conexion);
+const Sede = sedeModel(conexion);
+
+Entidad.hasMany(Sede, {foreignKey: 'idEntidad'});
+Sede.hasMany(LibroIncidencias, {foreignKey: 'idSede'});
+LibroIncidencias.belongsTo(Persona, {foreignKey: 'idPersona'});
+
 
 module.exports = {
     Persona: Persona,
     LibroIncidencias: LibroIncidencias,
     Entidad: Entidad,
+    Sede: Sede,
     conexion: conexion
 }

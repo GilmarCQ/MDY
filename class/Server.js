@@ -8,6 +8,8 @@ const { inpeRouter } = require('../routes/Inpe');
 const { mineduRouter } = require('../routes/Minedu');
 const { sunarpRouter } = require('../routes/Sunarp');
 const { entidadRouter } = require('../routes/Entidad');
+const { sedeRouter } = require('../routes/Sede');
+const { incidenciasRouter } = require('../routes/LibroIncidencias');
 const { conexion } = require('../config/Sequelize');
 
 class Server {
@@ -39,6 +41,8 @@ class Server {
         this.app.use('/minedu', mineduRouter);
         this.app.use('/sunarp', sunarpRouter);
         this.app.use('/entidad', entidadRouter);
+        this.app.use('/sede', sedeRouter);
+        this.app.use('/incidencias', incidenciasRouter);
     }
     start() {
         this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`));

@@ -13,6 +13,10 @@ const entidad_model = conexion => {
             type: sequelize.TEXT,
             allowNull: false
         },
+        siglas: {
+            type: sequelize.TEXT,
+            allowNull: true
+        },
         ruc: {
             type: sequelize.CHAR(11),
             allowNull: true

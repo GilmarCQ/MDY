@@ -21,15 +21,19 @@ const persona_model = conexion => {
             type: sequelize.TEXT,
             allowNull: false
         },
-        apPaterno: {
+        apellidoPaterno: {
             type: sequelize.TEXT,
             allowNull: false
         },
-        apMaterno: {
+        apellidoMaterno: {
             type: sequelize.TEXT,
             allowNull: false
         },
-        direccionPrincipal: {
+        nombreCompleto: {
+            type: sequelize.TEXT,
+            allowNull: true
+        },
+        direccion: {
             type: sequelize.TEXT,
             allowNull: false
         },
@@ -47,7 +51,8 @@ const persona_model = conexion => {
         },
         estado: {
             type: sequelize.BOOLEAN,
-            allowNull: false
+            allowNull: false,
+            defaultValue: true
         }
     },
     {
