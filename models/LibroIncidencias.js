@@ -61,4 +61,4 @@ const libroIncidencias_model = conexion => {
     return libroIncidencias;
 }
 
-module.exports = libroIncidencias_model;;
+module.exports = libroIncidencias_model;

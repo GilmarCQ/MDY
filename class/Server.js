@@ -10,6 +10,8 @@ const { sunarpRouter } = require('../routes/Sunarp');
 const { entidadRouter } = require('../routes/Entidad');
 const { sedeRouter } = require('../routes/Sede');
 const { incidenciasRouter } = require('../routes/LibroIncidencias');
+const { asociacionRouter } = require('../routes/Asociacion');
+const { personaBeneficiarioRouter } = require('../routes/PersonaBeneficiario');
 const { conexion } = require('../config/Sequelize');
 
 class Server {
@@ -43,6 +45,8 @@ class Server {
         this.app.use('/entidad', entidadRouter);
         this.app.use('/sede', sedeRouter);
         this.app.use('/incidencias', incidenciasRouter);
+        this.app.use('/asociacion', asociacionRouter);
+        this.app.use('/beneficiario', personaBeneficiarioRouter);
     }
     start() {
         this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`));

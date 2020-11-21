@@ -18,7 +18,7 @@ const getPJRazonSocial = (req, res) => {
 }
 const getPersona = (req, res) => {
     const body = req.query;
-    console.log(`${URL_API_SUNARP}/Titularidad?tipoParticipante=${body.tipo}&apellidoPaterno=${body.apPat}&apellidoMaterno=${body.apMat}&nombres=${body.nombres}&razonSocial=${body.razonSocial}`);
+    // console.log(`${URL_API_SUNARP}/Titularidad?tipoParticipante=${body.tipo}&apellidoPaterno=${body.apPat}&apellidoMaterno=${body.apMat}&nombres=${body.nombres}&razonSocial=${body.razonSocial}`);
     axios.get(`${URL_API_SUNARP}/Titularidad?tipoParticipante=${body.tipo}&apellidoPaterno=${body.apPat}&apellidoMaterno=${body.apMat}&nombres=${body.nombres}&razonSocial=${body.razonSocial}`)
         .then(response => {
             res.status(200).json({
