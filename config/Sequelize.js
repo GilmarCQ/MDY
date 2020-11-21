@@ -7,20 +7,20 @@ const sedeModel = require('../models/Sede');
 const personaBeneficiarioModel = require('../models/PersonaBeneficiario');
 const asociacionModel = require('../models/Asociacion');
 
-// const conexion = new Sequelize(
-//     'mdyDB', 'mdy', 'qazWSX123456', {
-//         host: '192.168.1.3',
-//         dialect: 'postgres',
-//         port: 5432
-//     }
-// );
 const conexion = new Sequelize(
-    'mdy_apps', 'postgres', 'root', {
-        host: 'localhost',
+    'mdyDB', 'mdy', 'qazWSX123456', {
+        host: '192.168.1.3',
         dialect: 'postgres',
         port: 5432
     }
 );
+// const conexion = new Sequelize(
+//     'mdy_apps', 'postgres', 'root', {
+//         host: 'localhost',
+//         dialect: 'postgres',
+//         port: 5432
+//     }
+// );
 
 // try {
 //     await conexion.authenticate();
