@@ -39,7 +39,7 @@ const personaBeneficiario_model = conexion => {
             },
             lote: {
                 type: sequelize.TEXT,
-                allowNull: false
+                allowNull: true
             },
             kilometro: {
                 type: sequelize.TEXT,
