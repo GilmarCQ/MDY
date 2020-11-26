@@ -69,14 +69,12 @@ const recibirBeneficio = (req, res) => {
         }
     })
         .then(beneficiario => {
-            console.log('BENEFICIARIO');
-            console.log(beneficiarioUpdate.familiares.length);
             if (beneficiarioUpdate.familiares.length === 0) {
                 if (beneficiario) {
                     beneficiario.estadoEntrega = beneficiarioUpdate.estadoEntrega;
                     beneficiario.fechaEntrega = beneficiarioUpdate.fechaEntrega;
                     beneficiario.save()
-                        .then(benActualizado => msgValue(res, 200, benActualizado, 'Beneficiario Actualizado', true))
+                        .then(benActualizado => msgValue(res, 200, benActualizado, 'Entrega de canasta asignada correctamente.', true))
                         .catch(error => {
                             res.status(200).json({
                                 ok: false,
@@ -89,12 +87,10 @@ const recibirBeneficio = (req, res) => {
             } else {
                 let filtrar = async () => {
                     let beneficiarioTitular = await actualizarEntrega(beneficiarioUpdate.fechaEntrega, beneficiarioUpdate.estadoEntrega, beneficiario);
-                    console.log(beneficiarioTitular);
+                    // console.log(beneficiarioTitular);
                     var familiaresCarga = [];
                     for (let indice = 0; indice < beneficiarioUpdate.familiares.length; indice++) {
                         familiar = beneficiarioUpdate.familiares[indice];
-                        console.log("FAMILIAR FAMILIAR FAMILIAR FAMILIAR");
-                        console.log(familiar);
                         familiar.direccion = beneficiario.direccion;
                         familiar.zona = beneficiario.zona;
                         familiar.manzana = beneficiario.manzana;
@@ -105,11 +101,18 @@ const recibirBeneficio = (req, res) => {
                         familiar.tipoPoblado = beneficiario.tipoPoblado;
                         familiar.estadoEntrega = beneficiarioUpdate.estadoEntrega;
                         familiar.fechaEntrega = beneficiarioUpdate.fechaEntrega;
+                        familiar.idAsociacion = beneficiario.idAsociacion;
+                        
+                        // console.log("FAMILIAR BUSCAR FAMILIAR BUSCAR");
+                        // console.log(familiar);
                         let familiarFind = await buscarFamiliar(familiar);
                         let familiarSinAsignacion;
+
+                        // console.log("FAMILIAR FIND FAMILIAR FIND");
+                        // console.log(familiarFind);
                         if (familiarFind) {
                             familiarSinAsignacion = await actualizarEntrega(beneficiarioUpdate.fechaEntrega, beneficiarioUpdate.estadoEntrega, familiarFind);
-                            console.log(familiarSinAsignacion);
+                            // console.log(familiarSinAsignacion);
                         } else {
                             familiarSinAsignacion = await crearBeneficiario(familiar);
                         }
@@ -120,10 +123,9 @@ const recibirBeneficio = (req, res) => {
                             familiarSinAsignacion.id,
                             familiarSinAsignacion.dni
                         );
-                        console.log(familiarAsignacion);
                         familiaresCarga.push(familiarFind);
                     }
-                    msgValue(res, 200, familiaresCarga, 'Estado de entrega actualizado correctamente', true)
+                    msgValue(res, 200, familiaresCarga, 'Entrega de canasta asignada correctamente.', true)
                 }
                 filtrar();
             }
@@ -131,6 +133,9 @@ const recibirBeneficio = (req, res) => {
         .catch(error => msgSimple(res, 500, 'Ocurrio un error, no se puedo actualizar el usuario.' + error, false))
 }
 const crearBeneficiario = async (beneficiarioCrear) => {
+
+    // console.log("FAMILIAR FAMILIAR FAMILIAR FAMILIAR");
+    // console.log(beneficiarioCrear);
     let beneficiarioBuild = PersonaBeneficiario.build(beneficiarioCrear);
     let beneficiario = beneficiarioBuild.save()
         .then(beneficiarioCreado => { return beneficiarioCreado })
@@ -152,8 +157,6 @@ const asignarFamiliar = async (tipo, idTitular, dniTitular, idFamiliar, dniFamil
     familiarAsignado.idFamiliar = idFamiliar;
     familiarAsignado.dniFamiliar = dniFamiliar;
 
-    console.log("ASIGNAR FAMILIAR");
-    console.log(familiarAsignado);
     let familiarAsignacion = await FamiliarBeneficiario.create(familiarAsignado)
         .then(familiar => { return familiar })
         .catch(error => console.log(error))
@@ -193,8 +196,8 @@ const buscarFamiliar = async (familiar) => {
     return familiarCF;
 }
 const verDetalle = (req, res) => {
-    
- }
+
+}
 
 module.exports = {
     agregarBeneficiario,
