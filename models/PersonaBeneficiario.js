@@ -74,6 +74,11 @@ const personaBeneficiario_model = conexion => {
                 type: sequelize.BOOLEAN,
                 allowNull: false,
                 defaultValue: true
+            },
+            tipoFamiliar: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: 'TITULAR'
             }
         },
         {

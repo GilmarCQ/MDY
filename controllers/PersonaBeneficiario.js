@@ -86,7 +86,9 @@ const recibirBeneficio = (req, res) => {
                 }
             } else {
                 let filtrar = async () => {
-                    let beneficiarioTitular = await actualizarEntrega(beneficiarioUpdate.fechaEntrega, beneficiarioUpdate.estadoEntrega, beneficiario);
+                    //  Actualiza informacion del Titular
+                    beneficiario.tipoFamiliar = 'TITULAR'
+                    await actualizarEntrega(beneficiarioUpdate.fechaEntrega, beneficiarioUpdate.estadoEntrega, beneficiario);
                     // console.log(beneficiarioTitular);
                     var familiaresCarga = [];
                     for (let indice = 0; indice < beneficiarioUpdate.familiares.length; indice++) {
@@ -102,21 +104,19 @@ const recibirBeneficio = (req, res) => {
                         familiar.estadoEntrega = beneficiarioUpdate.estadoEntrega;
                         familiar.fechaEntrega = beneficiarioUpdate.fechaEntrega;
                         familiar.idAsociacion = beneficiario.idAsociacion;
+                        familiar.tipoFamiliar = 'FAMILIAR';
                         
-                        // console.log("FAMILIAR BUSCAR FAMILIAR BUSCAR");
-                        // console.log(familiar);
+                        //  Busca si el familiar ya existe en la base de datos
                         let familiarFind = await buscarFamiliar(familiar);
                         let familiarSinAsignacion;
 
-                        // console.log("FAMILIAR FIND FAMILIAR FIND");
-                        // console.log(familiarFind);
                         if (familiarFind) {
-                            familiarSinAsignacion = await actualizarEntrega(beneficiarioUpdate.fechaEntrega, beneficiarioUpdate.estadoEntrega, familiarFind);
+                            familiarSinAsignacion = await actualizarEntrega(beneficiarioUpdate.fechaEntrega, beneficiarioUpdate.estadoEntrega, familiarFind, 'FAMILIAR');
                             // console.log(familiarSinAsignacion);
                         } else {
                             familiarSinAsignacion = await crearBeneficiario(familiar);
                         }
-                        let familiarAsignacion = await asignarFamiliar(
+                        await asignarFamiliar(
                             beneficiarioUpdate.familiares[indice].tipo,
                             beneficiario.id,
                             beneficiario.dni,
@@ -141,9 +141,9 @@ const crearBeneficiario = async (beneficiarioCrear) => {
         .then(beneficiarioCreado => { return beneficiarioCreado })
     return beneficiario;
 }
-const actualizarEntrega = async (fechaEntrega, estadoEntrega, beneficiarioUpdate) => {
+const actualizarEntrega = async (fechaEntrega, estadoEntrega, beneficiarioUpdate, tipoFamiliar = 'TITULAR') => {
     let beneficiario = beneficiarioUpdate.update({
-        fechaEntrega: fechaEntrega, estadoEntrega: estadoEntrega
+        fechaEntrega: fechaEntrega, estadoEntrega: estadoEntrega, tipoFamiliar: tipoFamiliar
     })
         .then(beneficiarioUpdated => { return beneficiarioUpdated })
     return beneficiario;
@@ -168,24 +168,7 @@ const asignarFamiliar = async (tipo, idTitular, dniTitular, idFamiliar, dniFamil
  */
 const buscarFamiliar = async (familiar) => {
     let familiarCF = await PersonaBeneficiario.findOne({
-        where: { estado: true, dni: familiar.dni },
-        defaults: {
-            dni: familiar.dni,
-            apellidoPaterno: familiar.apellidoPaterno,
-            apellidoMaterno: familiar.apellidoMaterno,
-            nombres: familiar.nombres,
-            direccion: familiar.direccion,
-            zona: familiar.zona,
-            manzana: familiar.manzana,
-            lote: familiar.lote,
-            kilometro: familiar.kilometro,
-            comite: familiar.comite,
-            sector: familiar.sector,
-            tipoPoblado: familiar.tipoPoblado,
-            estadoCivil: familiar.estadoCivil,
-            idAsociacion: familiar.isAsociacion,
-            fechaEntrega: familiar.fechaEntrega
-        }
+        where: { estado: true, dni: familiar.dni }
     })
         .then(data => {
             return data
