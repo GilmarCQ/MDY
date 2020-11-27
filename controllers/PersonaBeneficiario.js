@@ -3,16 +3,17 @@ const { PersonaBeneficiario, Asociacion, FamiliarBeneficiario } = require('../co
 
 const agregarBeneficiario = (req, res) => {
     const beneficiario = req.body.beneficiario;
+    // const beneficiario = req.body.beneficiario;
+    console.log(beneficiario);
     PersonaBeneficiario.findOne({
-        where: { estado: true, dni: beneficiario.dni }
+        where: { estado: true, tipoDocumento: beneficiario.tipoDocumento, numeroDocumento: beneficiario.numeroDocumento }
     })
         .then(persona => {
             if (persona) {
-                msgSimple(res, 201, 'La persona ya esta registrada', false);
+                msgSimple(res, 201, 'La persona ya esta registrada en el padrón.', false);
             } else {
                 beneficiario.fechaEntrega = new Date();
                 let beneficiarioAdd = PersonaBeneficiario.build(beneficiario);
-                // console.log(persona);
                 beneficiarioAdd.save()
                     .then(beneficiarioAgregado => {
                         if (beneficiarioAgregado) {
@@ -29,12 +30,14 @@ const agregarBeneficiario = (req, res) => {
                     })
             }
         })
+        .catch(error => console.log(error))
 }
 
-const buscarPorDni = (req, res) => {
-    const dni = req.query.dni;
+const buscarPorNumeroDocumento = (req, res) => {
+    const numeroDocumento = req.query.numeroDocumento;
+    const tipoDocumento = req.query.tipoDocumento;
     PersonaBeneficiario.findOne({
-        where: { estado: true, dni },
+        where: { estado: true, numeroDocumento, tipoDocumento },
         include: {
             model: Asociacion
         }
@@ -61,9 +64,9 @@ const eliminarBeneficiario = (req, res) => { }
 
 const recibirBeneficio = (req, res) => {
     const beneficiarioUpdate = req.body;
-    console.log(beneficiarioUpdate);
+
     PersonaBeneficiario.findOne({
-        where: { estado: true, dni: beneficiarioUpdate.dni },
+        where: { estado: true, tipoDocumento: beneficiarioUpdate.tipoDocumento, numeroDocumento: beneficiarioUpdate.numeroDocumento },
         include: {
             model: Asociacion
         }
@@ -87,6 +90,8 @@ const recibirBeneficio = (req, res) => {
             } else {
                 let filtrar = async () => {
                     //  Actualiza informacion del Titular
+                    // console.log('TITULAR TITULAR TITULAR TITULAR');
+                    // console.log(beneficiario);
                     beneficiario.tipoFamiliar = 'TITULAR'
                     await actualizarEntrega(beneficiarioUpdate.fechaEntrega, beneficiarioUpdate.estadoEntrega, beneficiario);
                     // console.log(beneficiarioTitular);
@@ -105,7 +110,7 @@ const recibirBeneficio = (req, res) => {
                         familiar.fechaEntrega = beneficiarioUpdate.fechaEntrega;
                         familiar.idAsociacion = beneficiario.idAsociacion;
                         familiar.tipoFamiliar = 'FAMILIAR';
-                        
+
                         //  Busca si el familiar ya existe en la base de datos
                         let familiarFind = await buscarFamiliar(familiar);
                         let familiarSinAsignacion;
@@ -117,11 +122,9 @@ const recibirBeneficio = (req, res) => {
                             familiarSinAsignacion = await crearBeneficiario(familiar);
                         }
                         await asignarFamiliar(
-                            beneficiarioUpdate.familiares[indice].tipo,
+                            beneficiarioUpdate.familiares[indice].tipoFamiliar,
                             beneficiario.id,
-                            beneficiario.dni,
-                            familiarSinAsignacion.id,
-                            familiarSinAsignacion.dni
+                            familiarSinAsignacion.id
                         );
                         familiaresCarga.push(familiarFind);
                     }
@@ -149,14 +152,15 @@ const actualizarEntrega = async (fechaEntrega, estadoEntrega, beneficiarioUpdate
     return beneficiario;
 }
 
-const asignarFamiliar = async (tipo, idTitular, dniTitular, idFamiliar, dniFamiliar) => {
+const asignarFamiliar = async (tipoFamiliar, idTitular, idFamiliar) => {
     let familiarAsignado = new Object();
-    familiarAsignado.tipo = tipo;
+    familiarAsignado.tipoFamiliar = tipoFamiliar;
     familiarAsignado.idTitular = idTitular;
-    familiarAsignado.dniTitular = dniTitular;
     familiarAsignado.idFamiliar = idFamiliar;
-    familiarAsignado.dniFamiliar = dniFamiliar;
-
+    // familiarAsignado.tipoDocumentoFamiliar = tipoDocumentoFamiliar;
+    // familiarAsignado.numeroDocumentoFamiliar = numeroDocumentoFamiliar;
+    console.log('TITULAR TITULAR TITULAR TITULAR');
+    console.log(familiarAsignado);
     let familiarAsignacion = await FamiliarBeneficiario.create(familiarAsignado)
         .then(familiar => { return familiar })
         .catch(error => console.log(error))
@@ -168,7 +172,7 @@ const asignarFamiliar = async (tipo, idTitular, dniTitular, idFamiliar, dniFamil
  */
 const buscarFamiliar = async (familiar) => {
     let familiarCF = await PersonaBeneficiario.findOne({
-        where: { estado: true, dni: familiar.dni }
+        where: { estado: true, tipoDocumento: familiar.tipoDocumento, numeroDocumento: familiar.numeroDocumento }
     })
         .then(data => {
             return data
@@ -184,7 +188,7 @@ const verDetalle = (req, res) => {
 
 module.exports = {
     agregarBeneficiario,
-    buscarPorDni,
+    buscarPorNumeroDocumento,
     eliminarBeneficiario,
     recibirBeneficio,
     verDetalle

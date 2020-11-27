@@ -9,8 +9,13 @@ const personaBeneficiario_model = conexion => {
                 type: sequelize.INTEGER,
                 allowNull: false
             },
-            dni: {
-                type: sequelize.CHAR(8),
+            tipoDocumento: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: 'DNI'
+            },
+            numeroDocumento: {
+                type: sequelize.TEXT,
                 allowNull: false
             },
             apellidoPaterno: {

@@ -3,7 +3,7 @@ const PersonaBeneficiario = require('../controllers/PersonaBeneficiario');
 const personaBeneficiarioRouter = express.Router();
 
 personaBeneficiarioRouter.post('/agregar', PersonaBeneficiario.agregarBeneficiario);
-personaBeneficiarioRouter.get('/buscar', PersonaBeneficiario.buscarPorDni);
+personaBeneficiarioRouter.get('/buscar', PersonaBeneficiario.buscarPorNumeroDocumento);
 personaBeneficiarioRouter.delete('/eliminar', PersonaBeneficiario.eliminarBeneficiario);
 personaBeneficiarioRouter.put('/recibir', PersonaBeneficiario.recibirBeneficio);
 

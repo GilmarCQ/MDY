@@ -10,18 +10,26 @@ const familiarBeneficiario_model = conexion => {
                 type: sequelize.INTEGER,
                 allowNull: false
             },
-            tipo: {
+            tipoFamiliar: {
                 type: sequelize.TEXT,
                 allowNull: false
             },
-            dniTitular: {
-                type: sequelize.CHAR(8),
-                allowNull: false
-            },
-            dniFamiliar: {
-                type: sequelize.CHAR(8),
-                allowNull: false
-            }
+            // tipoDocumentoTitular: {
+            //     type: sequelize.TEXT,
+            //     allowNull: false
+            // },
+            // numeroDocumentoTitular: {
+            //     type: sequelize.TEXT,
+            //     allowNull: false
+            // },
+            // tipoDocumentoFamiliar: {
+            //     type: sequelize.TEXT,
+            //     allowNull: false
+            // },
+            // numeroDocumentoFamiliar: {
+            //     type: sequelize.TEXT,
+            //     allowNull: false
+            // }
         },
         {
             tableName: 'familiarBeneficiario',
