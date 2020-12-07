@@ -108,6 +108,7 @@ const recibirBeneficio = (req, res) => {
                         familiar.tipoPoblado = beneficiario.tipoPoblado;
                         familiar.estadoEntrega = beneficiarioUpdate.estadoEntrega;
                         familiar.fechaEntrega = beneficiarioUpdate.fechaEntrega;
+                        familiar.usuario = beneficiarioUpdate.usuario;
                         familiar.idAsociacion = beneficiario.idAsociacion;
                         familiar.tipoFamiliar = 'FAMILIAR';
 

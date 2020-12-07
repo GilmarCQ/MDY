@@ -84,6 +84,11 @@ const personaBeneficiario_model = conexion => {
                 type: sequelize.TEXT,
                 allowNull: false,
                 defaultValue: 'TITULAR'
+            },
+            usuario: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: ''
             }
         },
         {

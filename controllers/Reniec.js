@@ -3,7 +3,7 @@ const URL_API_RENIEC = 'https://ws5.pide.gob.pe/Rest/Reniec';
 
 const getPerson = (req, res) => {
     const body = req.query;
-    console.log(body);
+    // console.log(body);
     axios.get(`${URL_API_RENIEC}/Consultar?nuDniConsulta=${body.dniConsulta}&nuDniUsuario=${body.dniUsuario}&nuRucUsuario=${body.ruc}&password=${body.password}`)
     .then(response => {
         res.status(200).json({

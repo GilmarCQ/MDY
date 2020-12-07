@@ -7,21 +7,22 @@ const sedeModel = require('../models/Sede');
 const personaBeneficiarioModel = require('../models/PersonaBeneficiario');
 const asociacionModel = require('../models/Asociacion');
 const familiarBeneficiarioModel = require('../models/familiarBeneficiario');
+const usuarioModel = require('../models/Usuario');
 
-const conexion = new Sequelize(
-    'mdyDB', 'mdy', 'qazWSX123456', {
-        host: '192.168.1.3',
-        dialect: 'postgres',
-        port: 5432
-    }
-);
 // const conexion = new Sequelize(
-//     'mdy_apps', 'postgres', 'root', {
-//         host: 'localhost',
+//     'mdyDB', 'mdy', 'qazWSX123456', {
+//         host: '192.168.1.3',
 //         dialect: 'postgres',
 //         port: 5432
 //     }
 // );
+const conexion = new Sequelize(
+    'mdy_apps', 'postgres', 'root', {
+        host: 'localhost',
+        dialect: 'postgres',
+        port: 5432
+    }
+);
 
 const Persona = personaModel(conexion);
 const LibroIncidencias = libroIncidenciasModel(conexion);
@@ -30,6 +31,7 @@ const Sede = sedeModel(conexion);
 const PersonaBeneficiario = personaBeneficiarioModel(conexion);
 const Asociacion = asociacionModel(conexion);
 const FamiliarBeneficiario = familiarBeneficiarioModel(conexion);
+const Usuario = usuarioModel(conexion);
 
 Entidad.hasMany(Sede, {foreignKey: 'idEntidad'});
 Sede.hasMany(LibroIncidencias, {foreignKey: 'idSede'});
@@ -52,5 +54,6 @@ module.exports = {
     conexion: conexion,
     PersonaBeneficiario: PersonaBeneficiario,
     Asociacion: Asociacion,
-    FamiliarBeneficiario: FamiliarBeneficiario
+    FamiliarBeneficiario: FamiliarBeneficiario,
+    Usuario: Usuario
 }
