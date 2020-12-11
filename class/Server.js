@@ -54,7 +54,7 @@ class Server {
     }
     start() {
         this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`));
-        conexion.sync({alter: true, force: false}).then(() => {
+        conexion.sync({force: false}).then(() => {
             console.log("Base de Datos Sincronizada")
         })
     }

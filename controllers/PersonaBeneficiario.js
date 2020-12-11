@@ -76,6 +76,7 @@ const recibirBeneficio = (req, res) => {
                 if (beneficiario) {
                     beneficiario.estadoEntrega = beneficiarioUpdate.estadoEntrega;
                     beneficiario.fechaEntrega = beneficiarioUpdate.fechaEntrega;
+                    beneficiario.usuario = beneficiarioUpdate.usuario;
                     beneficiario.save()
                         .then(benActualizado => msgValue(res, 200, benActualizado, 'Entrega de canasta asignada correctamente.', true))
                         .catch(error => {
