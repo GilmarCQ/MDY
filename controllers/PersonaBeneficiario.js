@@ -1,5 +1,6 @@
 const { msgError, msgSimple, msgValue } = require('./Utils');
 const { PersonaBeneficiario, Asociacion, FamiliarBeneficiario } = require('../config/Sequelize');
+const { Op } = require('sequelize');
 
 const agregarBeneficiario = (req, res) => {
     const beneficiario = req.body.beneficiario;
@@ -188,11 +189,36 @@ const verDetalle = (req, res) => {
 
 }
 
+const contarBeneficiariosPorFecha = (req, res) => {
+    const { fechaInicio, fechaFin } = req.query;
+
+    console.log('FECHA INICIO Y FIN');
+    console.log(fechaInicio, fechaFin);
+
+    PersonaBeneficiario.count({
+        where: {
+            estado: true,
+            estadoEntrega: true,
+            fechaEntrega: {
+                [Op.between]: [fechaInicio, fechaFin]
+            }
+        }
+    })
+    .then(respuesta => {
+        console.log('CONTABILIDAD ....');
+        console.log(respuesta);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+}
+
 module.exports = {
     agregarBeneficiario,
     buscarPorNumeroDocumento,
     eliminarBeneficiario,
     recibirBeneficio,
-    verDetalle
+    verDetalle,
+    contarBeneficiariosPorFecha
 }
 

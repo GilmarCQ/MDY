@@ -3,7 +3,10 @@ const { Asociacion } = require('../config/Sequelize');
 const listarAsociaciones = (req, res) => {
     Asociacion.findAll({
         where: { estado: true },
-        attributes: ['id', 'nombre']
+        attributes: ['id', 'nombre'],
+        order:[
+            ['nombre', 'ASC']
+        ]
     })
     .then(asociaciones => {
         if(asociaciones) {

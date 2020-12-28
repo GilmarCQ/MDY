@@ -6,6 +6,7 @@ personaBeneficiarioRouter.post('/agregar', PersonaBeneficiario.agregarBeneficiar
 personaBeneficiarioRouter.get('/buscar', PersonaBeneficiario.buscarPorNumeroDocumento);
 personaBeneficiarioRouter.delete('/eliminar', PersonaBeneficiario.eliminarBeneficiario);
 personaBeneficiarioRouter.put('/recibir', PersonaBeneficiario.recibirBeneficio);
+personaBeneficiarioRouter.get('/contarPorRango', PersonaBeneficiario.contarBeneficiariosPorFecha);
 
 module.exports = {
     personaBeneficiarioRouter

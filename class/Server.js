@@ -14,6 +14,8 @@ const { asociacionRouter } = require('../routes/Asociacion');
 const { personaBeneficiarioRouter } = require('../routes/PersonaBeneficiario');
 const { migracionRouter } = require('../routes/Migracion');
 const { usuarioRouter } = require('../routes/Usuario');
+const { menuRouter } = require('../routes/Menu');
+const { moduloRouter } = require('../routes/Modulo');
 const { conexion } = require('../config/Sequelize');
 
 class Server {
@@ -51,6 +53,8 @@ class Server {
         this.app.use('/beneficiario', personaBeneficiarioRouter);
         this.app.use('/migracion', migracionRouter);
         this.app.use('/auth', usuarioRouter);
+        this.app.use('/menu', menuRouter);
+        this.app.use('/modulo', moduloRouter);
     }
     start() {
         this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`));

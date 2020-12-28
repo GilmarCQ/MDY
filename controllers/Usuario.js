@@ -22,8 +22,6 @@ const CrearUsuario = (req, res) => {
 }
 const Login = (req, res) => {
     const objUsuario = req.body;
-
-    console.log(objUsuario);
     Usuario.findOne({
         where: {
             usuario: objUsuario.usuario
@@ -56,14 +54,17 @@ const Login = (req, res) => {
         .catch(error => msgError(res, error, 500))
 }
 const VerificarToken = (req, res) => {
-    const tokenTmp = req.body;
-    console.log(tokenTmp);
+    const tokenTmp = req.body.token;
+    // console.log("VALIDAR TOKEN");
+    // console.log(tokenTmp);
     try {
         // verificar si mi token cumple si aun vive, si es valida, si la contraseña concuerda entre otros
         const data = jwt.verify(tokenTmp, 'q@zWSX123456', { algorithm: 'RS256' });
-        console.log(data);
+        // console.log("VALIDAR TOKEN");
+        // console.log(data);
         msgSimple(res, 201, 'Token correcto.', true);
     } catch (error) {
+        console.log(error);
         msgError(res, error, 500)
     }
 

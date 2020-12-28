@@ -46,6 +46,11 @@ const usuario_model = conexion => {
             salt: {
                 type: sequelize.TEXT,
                 allowNull: false
+            },
+            estado: {
+                type: sequelize.BOOLEAN,
+                allowNull: false,
+                defaultValue: true
             }
         },
         {
@@ -72,7 +77,7 @@ const usuario_model = conexion => {
             usu_tipo: this.tipo,
             usu_reniec: this.usu_reniec
         };
-        let token = jwt.sign(payload, 'q@zWSX123456', { expiresIn: '1h' }, { algorithm: 'RS256' });
+        let token = jwt.sign(payload, 'q@zWSX123456', { expiresIn: '2h' }, { algorithm: 'RS256' });
         return token;
     }
 
