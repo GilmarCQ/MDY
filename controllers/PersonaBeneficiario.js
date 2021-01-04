@@ -1,6 +1,7 @@
 const { msgError, msgSimple, msgValue } = require('./Utils');
 const { PersonaBeneficiario, Asociacion, FamiliarBeneficiario } = require('../config/Sequelize');
 const { Op } = require('sequelize');
+const moment = require('moment-timezone')
 
 const agregarBeneficiario = (req, res) => {
     const beneficiario = req.body.beneficiario;
@@ -61,7 +62,31 @@ const buscarPorNumeroDocumento = (req, res) => {
         })
 }
 
-const eliminarBeneficiario = (req, res) => { }
+const actualizarEntregaBeneficio = (req, res) => {
+    const beneficiario = req.body;
+    PersonaBeneficiario.findOne({
+        where: {
+            estado: true,
+            tipoDocumento: beneficiario.tipoDocumento,
+            numeroDocumento: beneficiario.numeroDocumento
+        }
+    })
+    .then(
+        beneficiarioEncontrado => {
+            if (beneficiarioEncontrado) {
+                beneficiarioEncontrado.fechaEntrega = convertFormatMoment(beneficiario.fechaEntrega, '11:00:00');
+                beneficiarioEncontrado.estadoEntrega = beneficiario.estadoEntrega;
+                beneficiarioEncontrado.usuario = beneficiario.usuario;
+                beneficiarioEncontrado.save()
+                    .then(benActualizado => res.status(200).json(benActualizado))
+                    .catch(error => res.status(500).json(error));
+            } else {
+                res.status(404).json(beneficiarioEncontrado);
+            }
+        }
+    )
+    .catch(error => res.status(500).json(error));
+}
 
 const recibirBeneficio = (req, res) => {
     const beneficiarioUpdate = req.body;
@@ -185,40 +210,87 @@ const buscarFamiliar = async (familiar) => {
         })
     return familiarCF;
 }
-const verDetalle = (req, res) => {
-
-}
 
 const contarBeneficiariosPorFecha = (req, res) => {
     const { fechaInicio, fechaFin } = req.query;
-
-    console.log('FECHA INICIO Y FIN');
-    console.log(fechaInicio, fechaFin);
-
+    const fechaInicioDate = convertFormatMoment(fechaInicio, '00:00:01');
+    const fechaFinDate = convertFormatMoment(fechaFin, '23:59:01');
     PersonaBeneficiario.count({
         where: {
             estado: true,
             estadoEntrega: true,
             fechaEntrega: {
-                [Op.between]: [fechaInicio, fechaFin]
+                [Op.between]: [fechaInicioDate, fechaFinDate]
             }
         }
     })
-    .then(respuesta => {
-        console.log('CONTABILIDAD ....');
-        console.log(respuesta);
+        .then(respuesta => {
+            res.status(200).json(respuesta);
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        })
+}
+/**
+ * Metodo que convierte una fecha Date a formato compatible
+ * @param {*} fecha => fecha a convertir en formato moment
+ * @param {*} fechaFlag => flag que indica si es rango de inicio de la fecha (true => 00:00:01 || false => 23:59:01)
+ */
+const convertFormatMoment = (fecha, hora) => {
+    const fechaDate = new Date(fecha);
+    return moment
+        .utc(`${fechaDate.getFullYear()}-${fechaDate.getMonth() + 1}-${fechaDate.getDate()} ${hora}`)
+        .tz('America/Lima')
+        .format();
+}
+
+const contarBeneficiariosPorFechaAsociacion = (req, res) => {
+    const { fechaInicio, fechaFin } = req.query;
+    const fechaInicioDate = convertFormatMoment(fechaInicio, '00:00:01');
+    const fechaFinDate = convertFormatMoment(fechaFin, '23:59:01');
+    PersonaBeneficiario.count({
+        include: {
+            model: Asociacion
+        },
+        where: {
+            estado: true,
+            estadoEntrega: true,
+            fechaEntrega: {
+                [Op.between]: [fechaInicioDate, fechaFinDate]
+            }
+        },
+        group: ['asociacion.nombre'],
+        attributes: ['asociacion.nombre']
     })
-    .catch(error => {
-        console.log(error);
-    })
+        .then(respuesta => {
+            PersonaBeneficiario.count({
+                where: {
+                    estado: true,
+                    estadoEntrega: true,
+                    fechaEntrega: {
+                        [Op.between]: [fechaInicioDate, fechaFinDate]
+                    }
+                }
+            })
+            .then(response => {
+                res.status(200).json({
+                    total: response,
+                    lista: respuesta
+                })
+            })
+            // res.status(200).json(respuesta);
+        })
+        .catch(error => {
+            res.status(500).json(error);
+        });
 }
 
 module.exports = {
     agregarBeneficiario,
     buscarPorNumeroDocumento,
-    eliminarBeneficiario,
     recibirBeneficio,
-    verDetalle,
-    contarBeneficiariosPorFecha
+    actualizarEntregaBeneficio,
+    contarBeneficiariosPorFecha,
+    contarBeneficiariosPorFechaAsociacion
 }
 

@@ -4,9 +4,10 @@ const personaBeneficiarioRouter = express.Router();
 
 personaBeneficiarioRouter.post('/agregar', PersonaBeneficiario.agregarBeneficiario);
 personaBeneficiarioRouter.get('/buscar', PersonaBeneficiario.buscarPorNumeroDocumento);
-personaBeneficiarioRouter.delete('/eliminar', PersonaBeneficiario.eliminarBeneficiario);
 personaBeneficiarioRouter.put('/recibir', PersonaBeneficiario.recibirBeneficio);
+personaBeneficiarioRouter.put('/recibir-actualizar', PersonaBeneficiario.actualizarEntregaBeneficio);
 personaBeneficiarioRouter.get('/contarPorRango', PersonaBeneficiario.contarBeneficiariosPorFecha);
+personaBeneficiarioRouter.get('/contarPorRangoAsociacion', PersonaBeneficiario.contarBeneficiariosPorFechaAsociacion);
 
 module.exports = {
     personaBeneficiarioRouter
