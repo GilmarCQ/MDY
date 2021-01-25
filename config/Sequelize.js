@@ -10,7 +10,11 @@ const familiarBeneficiarioModel = require('../models/familiarBeneficiario');
 const usuarioModel = require('../models/Usuario');
 const moduloModel = require('../models/Modulo');
 const paginaModel = require('../models/Pagina');
-
+const tipoDocumentoModel = require('../models/TipoDocumento');
+const mascotaModel = require('../models/Mascota');
+const propietarioMascotaModel = require('../models/PropietarioMascota');
+const comportamientoModel = require('../models/Comportamiento');
+const comportamientoMascotaModel = require('../models/ComportamientoMascota');
 const conexion = new Sequelize(
     'mdyDB', 'mdy', 'qazWSX123456', {
         host: '192.168.1.3',
@@ -36,6 +40,11 @@ const FamiliarBeneficiario = familiarBeneficiarioModel(conexion);
 const Usuario = usuarioModel(conexion);
 const Modulo = moduloModel(conexion);
 const Pagina = paginaModel(conexion);
+const TipoDocumento = tipoDocumentoModel(conexion);
+const Mascota = mascotaModel(conexion);
+const PropietarioMascota = propietarioMascotaModel(conexion);
+const Comportamiento = comportamientoModel(conexion);
+const ComportamientoMascota = comportamientoMascotaModel(conexion);
 
 Entidad.hasMany(Sede, {foreignKey: 'idEntidad'});
 Sede.hasMany(LibroIncidencias, {foreignKey: 'idSede'});
@@ -53,6 +62,11 @@ FamiliarBeneficiario.belongsTo(PersonaBeneficiario, { foreignKey: 'idFamiliar'})
 Modulo.hasMany(Pagina, { foreignKey: 'idModulo' });
 Pagina.belongsTo(Modulo, { foreignKey: 'idModulo' });
 
+Persona.belongsToMany(Mascota, { through: PropietarioMascota, foreignKey: 'idPersona'});
+Mascota.belongsToMany(Persona, { through: PropietarioMascota, foreignKey: 'idMascota'});
+
+Mascota.belongsToMany(Comportamiento, { through: ComportamientoMascota, foreignKey: 'idMascota'});
+Comportamiento.belongsToMany(Mascota, { through: ComportamientoMascota, foreignKey: 'idComportamiento'});
 
 module.exports = {
     Persona: Persona,
@@ -65,5 +79,10 @@ module.exports = {
     FamiliarBeneficiario: FamiliarBeneficiario,
     Usuario: Usuario,
     Modulo,
-    Pagina
+    Pagina,
+    TipoDocumento,
+    Comportamiento,
+    Mascota,
+    PropietarioMascota,
+    ComportamientoMascota
 }

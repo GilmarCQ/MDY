@@ -1,16 +1,12 @@
 const sequelize = require('sequelize');
 
-const asociacion_model = conexion => {
-    let asociacion = conexion.define('asociacion',
+const comportamientoMascota_model = conexion => {
+    let comportamientoMascota = conexion.define('comportamientoMascota',
         {
             id: {
                 primaryKey: true,
                 autoIncrement: true,
                 type: sequelize.INTEGER,
-                allowNull: false
-            },
-            nombre: {
-                type: sequelize.TEXT,
                 allowNull: false
             },
             estado: {
@@ -20,11 +16,11 @@ const asociacion_model = conexion => {
             }
         },
         {
-            tableName: 'asociacion',
-            timestamps: true
+            timestamps: true,
+            tableName: 'comportamientoMascota'
         }
     );
-    return asociacion;
+    return comportamientoMascota;
 }
 
-module.exports = asociacion_model;
+module.exports = comportamientoMascota_model;

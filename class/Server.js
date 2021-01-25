@@ -16,6 +16,8 @@ const { migracionRouter } = require('../routes/Migracion');
 const { usuarioRouter } = require('../routes/Usuario');
 const { menuRouter } = require('../routes/Menu');
 const { moduloRouter } = require('../routes/Modulo');
+const { catalogoRouter } = require('../routes/Catalogo');
+const { mascotaRouter } = require('../routes/Mascota');
 const { conexion } = require('../config/Sequelize');
 
 class Server {
@@ -55,10 +57,12 @@ class Server {
         this.app.use('/auth', usuarioRouter);
         this.app.use('/menu', menuRouter);
         this.app.use('/modulo', moduloRouter);
+        this.app.use('/catalogo', catalogoRouter);
+        this.app.use('/mascota', mascotaRouter);
     }
     start() {
         this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`));
-        conexion.sync({force: false}).then(() => {
+        conexion.sync({alter: true, force: false}).then(() => {
             console.log("Base de Datos Sincronizada")
         })
     }

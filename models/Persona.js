@@ -33,6 +33,10 @@ const persona_model = conexion => {
             type: sequelize.TEXT,
             allowNull: true
         },
+        fechaNacimiento: {
+            type: sequelize.DATEONLY,
+            allowNull: true
+        },
         direccion: {
             type: sequelize.TEXT,
             allowNull: false
@@ -53,7 +57,11 @@ const persona_model = conexion => {
             type: sequelize.BOOLEAN,
             allowNull: false,
             defaultValue: true
-        }
+        },
+        sexo: {
+            type: sequelize.TEXT,
+            allowNull: true
+        },
     },
     {
         tableName: 'persona',

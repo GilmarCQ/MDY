@@ -1,5 +1,3 @@
-const https = require('https');
-const http = require('http');
 const axios = require('axios')
 
 const getEmploye = (req, res) => {

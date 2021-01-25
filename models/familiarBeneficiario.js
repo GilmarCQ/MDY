@@ -1,5 +1,4 @@
 const sequelize = require('sequelize');
-const { conexion } = require('../config/Sequelize');
 
 const familiarBeneficiario_model = conexion => {
     let familiarBeneficiario = conexion.define('familiarBeneficiario',

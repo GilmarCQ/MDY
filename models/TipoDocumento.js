@@ -1,7 +1,7 @@
 const sequelize = require('sequelize');
 
-const asociacion_model = conexion => {
-    let asociacion = conexion.define('asociacion',
+const tipoDocumento_model = conexion => {
+    let tipoDocumento = conexion.define('tipoDocumento',
         {
             id: {
                 primaryKey: true,
@@ -10,7 +10,7 @@ const asociacion_model = conexion => {
                 allowNull: false
             },
             nombre: {
-                type: sequelize.TEXT,
+                type: sequelize.CHAR(30),
                 allowNull: false
             },
             estado: {
@@ -20,11 +20,11 @@ const asociacion_model = conexion => {
             }
         },
         {
-            tableName: 'asociacion',
+            tableName: 'tipoDocumento',
             timestamps: true
         }
     );
-    return asociacion;
-}
+    return tipoDocumento;
+};
 
-module.exports = asociacion_model;
+module.exports = tipoDocumento_model;

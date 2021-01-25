@@ -1,7 +1,7 @@
 const sequelize = require('sequelize');
 
-const asociacion_model = conexion => {
-    let asociacion = conexion.define('asociacion',
+const propietarioMascota_model = conexion => {
+    let propietarioMascota = conexion.define('propietarioMascota',
         {
             id: {
                 primaryKey: true,
@@ -9,7 +9,7 @@ const asociacion_model = conexion => {
                 type: sequelize.INTEGER,
                 allowNull: false
             },
-            nombre: {
+            tipo: {
                 type: sequelize.TEXT,
                 allowNull: false
             },
@@ -20,11 +20,11 @@ const asociacion_model = conexion => {
             }
         },
         {
-            tableName: 'asociacion',
-            timestamps: true
+            timestamps: true,
+            tableName: 'propietarioMascota'
         }
     );
-    return asociacion;
+    return propietarioMascota;
 }
 
-module.exports = asociacion_model;
+module.exports = propietarioMascota_model;
