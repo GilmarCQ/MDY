@@ -37,6 +37,10 @@ const persona_model = conexion => {
             type: sequelize.DATEONLY,
             allowNull: true
         },
+        edad: {
+            type: sequelize.TEXT,
+            allowNull: true
+        },
         direccion: {
             type: sequelize.TEXT,
             allowNull: false

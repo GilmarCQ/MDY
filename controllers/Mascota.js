@@ -1,4 +1,4 @@
-const { Mascota, Persona, PropietarioMascota, ComportamientoMascota } = require('../config/Sequelize');
+const { Mascota, Persona, PropietarioMascota, ComportamientoMascota, Comportamiento } = require('../config/Sequelize');
 const { obtenerPdfFichaRegistro } = require('../controllers/Documento');
 
 const registrarMascota = async (req, res) => {
@@ -28,8 +28,14 @@ const registrarMascota = async (req, res) => {
 }
 
 const buscarFichaRegistro = async (req, res) => {
-    const numeroregistro = req.query;
-    obtenerPdfFichaRegistro(res);
+    const {numeroRegistro} = req.query;
+
+    const respuesta = await buscarMascotaRegistro(res, numeroRegistro);
+    // console.log(respuesta);
+    const comportamientosMascota = await buscarComportamientosMascota(res, numeroRegistro);
+    console.log(comportamientosMascota);
+
+    await obtenerPdfFichaRegistro(res, respuesta, convertirNumeroDigitos(numeroRegistro, 8), comportamientosMascota);
 
     // res.send('PDF DESCARGADO');
 }
@@ -54,7 +60,7 @@ const buscarPorDocumento = (req, res) => {
                 model: Mascota,
                 attributes: {
                     exclude: ['createdAt', 'updatedAt', 'foto', 'propietarioMascota', 'edad',
-                    'color', 'tamanio', 'sexo', 'raza', 'esterilizado', 'descripcion', 'estado', ]
+                        'color', 'tamanio', 'sexo', 'raza', 'esterilizado', 'descripcion', 'estado',]
                 }
             }
         ],
@@ -70,6 +76,46 @@ const buscarPorDocumento = (req, res) => {
 /**
  * UTILITARIOS PARA METODOS DE CONTROLADORES
  */
+const buscarComportamientosMascota = async (res, numeroRegistro) => {
+    var comportamientos;
+    await Mascota.findOne({
+        where: { registro: numeroRegistro },
+        include: [
+            {
+                model: Comportamiento,
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'estado']
+                }
+            }
+        ],
+        attributes: ['id', 'nombre']
+    })
+    .then(comportamientosMascota => {
+        // console.log(comportamientosMascota);
+        comportamientos = comportamientosMascota.comportamientos;
+        // res.status(200).json(comportamiento.comportamientos)
+    })
+    .catch(error => res.status(500).json(error))
+    return comportamientos;
+}
+
+const buscarMascotaRegistro = async (res, numeroRegistro) => {
+    var respuesta;
+    await Mascota.findOne({
+        where: { registro: numeroRegistro, estado: true },
+        include: [
+            {
+                model: Persona,
+            }
+        ],
+        attributes: {
+            exclude: ['createdAt', 'updatedAt', 'foto', 'especie', 'estado']
+        }
+    })
+        .then(mascotas => respuesta = mascotas)
+        .catch(error => res.status(500).json(error));
+    return respuesta;
+}
 
 const convertirNumeroDigitos = (numero, numeroDigitos) => {
     let numeroCadena = numero.toString();

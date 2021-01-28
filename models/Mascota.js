@@ -65,6 +65,15 @@ const mascota_model = conexion => {
             fechaRegistro: {
                 type: sequelize.DATEONLY,
                 allowNull: false
+            },
+            estadoRegistro: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: 'ENVIADO'
+            },
+            fechaRevision: {
+                type: sequelize.DATEONLY,
+                allowNull: true
             }
         },
         {
