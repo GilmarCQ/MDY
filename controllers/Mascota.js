@@ -33,9 +33,9 @@ const buscarFichaRegistro = async (req, res) => {
     const respuesta = await buscarMascotaRegistro(res, numeroRegistro);
     // console.log(respuesta);
     const comportamientosMascota = await buscarComportamientosMascota(res, numeroRegistro);
-    console.log(comportamientosMascota);
+    // console.log(comportamientosMascota);
 
-    await obtenerPdfFichaRegistro(res, respuesta, convertirNumeroDigitos(numeroRegistro, 8), comportamientosMascota);
+    await obtenerPdfFichaRegistro(res, respuesta, convertirNumeroDigitos(numeroRegistro, 8), enumerarComportamiento(comportamientosMascota));
 
     // res.send('PDF DESCARGADO');
 }
@@ -76,6 +76,18 @@ const buscarPorDocumento = (req, res) => {
 /**
  * UTILITARIOS PARA METODOS DE CONTROLADORES
  */
+
+const enumerarComportamiento = (comportamientos) => {
+    
+    // console.log(typeof comportamientosLista);
+    // for(let a = 0; a < comportamientos.length ; a++ ) {
+    //     comportamientosLista.push(comportamientos[a].nombre);
+    // }
+    var comportamientosLista = Array.from(comportamientos, x => x.nombre );
+    console.log(typeof comportamientosLista);
+    // console.log(comportamientosLista);
+    return comportamientosLista;
+}
 const buscarComportamientosMascota = async (res, numeroRegistro) => {
     var comportamientos;
     await Mascota.findOne({
@@ -91,9 +103,7 @@ const buscarComportamientosMascota = async (res, numeroRegistro) => {
         attributes: ['id', 'nombre']
     })
     .then(comportamientosMascota => {
-        // console.log(comportamientosMascota);
         comportamientos = comportamientosMascota.comportamientos;
-        // res.status(200).json(comportamiento.comportamientos)
     })
     .catch(error => res.status(500).json(error))
     return comportamientos;
@@ -109,7 +119,7 @@ const buscarMascotaRegistro = async (res, numeroRegistro) => {
             }
         ],
         attributes: {
-            exclude: ['createdAt', 'updatedAt', 'foto', 'especie', 'estado']
+            exclude: ['createdAt', 'updatedAt', 'especie', 'estado']
         }
     })
         .then(mascotas => respuesta = mascotas)
