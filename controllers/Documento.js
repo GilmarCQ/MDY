@@ -104,7 +104,7 @@ const obtenerPdfFichaRegistro = async (res, respuesta, numeroRegistro, comportam
                                 { text: `Otras características: ${mascota.descripcion}`, colSpan: 2, style: 'tableContent' }
                             ],
                             [
-                                {   image: foto, fit: [200, 200], alignment: 'center', style: 'tableImages' },
+                                {   image: foto, fit: [100, 100], alignment: 'center', style: 'tableImages' },
                                 {   qr: numeroRegistro, fit: '100', alignment: 'center', style: 'tableImages' },
                             ]
                         ]
