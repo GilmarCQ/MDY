@@ -5,8 +5,9 @@ const fonts = require("../utils/pdf/fonts");
 
 const obtenerPdfFichaRegistro = async (res, respuesta, numeroRegistro, comportamientos) => {
 
-    // const foto = await respuesta.foto.toString('base64');
     try {
+        const foto = respuesta.foto;
+        // console.log(respuesta.personas);
         var propietario, contacto, mascota;
         propietario = respuesta.personas[0];
         contacto = respuesta.personas[1];
@@ -101,16 +102,40 @@ const obtenerPdfFichaRegistro = async (res, respuesta, numeroRegistro, comportam
                             ],
                             [
                                 { text: `Otras características: ${mascota.descripcion}`, colSpan: 2, style: 'tableContent' }
+                            ],
+                            [
+                                {   image: foto, fit: [200, 200], alignment: 'center', style: 'tableImages' },
+                                {   qr: numeroRegistro, fit: '100', alignment: 'center', style: 'tableImages' },
                             ]
                         ]
                     },
                     layout: 'headerLineOnly'
                 },
-                // {
-                //     image: 'data:image/jpeg;' + foto,
-                //     width: 200
-                // },
-                { qr: numeroRegistro, fit: '100', alignment: 'right' },
+                {
+                    pageBreak: 'before',
+                    style: 'tableExample',
+                    color: '#555',
+                    table: {
+                        widths: ['*', '*'],
+                        body: [
+                            [
+                                { text: 'COMPROMISO', colSpan: 2, alignment: 'center', style: 'tableHeader' },
+                                {}
+                            ],
+                            [
+                                { text: 'Por medio de la firma del presente documento manifiesto mi voluntad de garantizar la adecuada crianza, protección, cuidado y afecto al can que registro. \n'
+                                + 'Asimismo cumplir y acatar los dispuesto en la ley N° 27596 Ley del Régimen Jurídico de Canes u  su reglamento aprobado por Decreto Supremo N° 006-2002-SA, Ley N° 27265, Ley de Proteción a los Animales Domésticos y los Animales Silvestres mantenidos en cautiverio Ley N° 27972 Ley Organiza de Municipalidades, artículo 16, Ordenanza Municipal N° 002-2017-MDY \n'
+                                + 'Firmo el presente en señal de aceptación de lo dispuesto por normativa legal vigente y me someto a las sanciones correspondientes.', colSpan: 2, alignment: 'justify', style: 'tableContent' },
+                                {}
+                            ],
+                            [
+                                { text: `__________________________________\nNombre del Propietario\nDNI`, alignment: 'center', style: 'tableFirma' },
+                                { text: `__________________________________\nNombre del Registrador`, alignment: 'center', style: 'tableFirma' }
+                            ]
+                        ]
+                    },
+                    layout: 'headerLineOnly'
+                }
             ],
             styles: {
                 header: {
@@ -139,6 +164,18 @@ const obtenerPdfFichaRegistro = async (res, respuesta, numeroRegistro, comportam
                     fontSize: 11,
                     color: '#00000',
                     margin: [10, 2, 10, 2]
+                },
+                tableFirma: {
+                    bold: true,
+                    fontSize: 11,
+                    color: '#00000',
+                    margin: [10, 150, 10, 2]
+                },
+                tableImages: {
+                    bold: true,
+                    fontSize: 11,
+                    color: '#00000',
+                    margin: [10, 20, 10, 2]
                 },
                 tableContentNoEspacio: {
                     bold: true,
@@ -169,6 +206,7 @@ const obtenerPdfFichaRegistro = async (res, respuesta, numeroRegistro, comportam
 
     } catch (error) {
         console.log(error + '------------------');
+        res.status(500).json(error)
     }
 
 }

@@ -59,7 +59,7 @@ const mascota_model = conexion => {
                 allowNull: false
             },
             foto: {
-                type: sequelize.BLOB,
+                type: sequelize.TEXT('long'),
                 allowNull: false
             },
             fechaRegistro: {
@@ -74,6 +74,11 @@ const mascota_model = conexion => {
             fechaRevision: {
                 type: sequelize.DATEONLY,
                 allowNull: true
+            },
+            tipoRegistro: {
+                type: sequelize.TEXT,
+                allowNull: true,
+                defaultValue: 'VIRTUAL'
             }
         },
         {

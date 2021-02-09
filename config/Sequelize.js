@@ -15,20 +15,22 @@ const mascotaModel = require('../models/Mascota');
 const propietarioMascotaModel = require('../models/PropietarioMascota');
 const comportamientoModel = require('../models/Comportamiento');
 const comportamientoMascotaModel = require('../models/ComportamientoMascota');
-// const conexion = new Sequelize(
-//     'mdyDB', 'mdy', 'qazWSX123456', {
-//         host: '192.168.1.3',
-//         dialect: 'postgres',
-//         port: 5432
-//     }
-// );
+const observacionModel = require('../models/Observacion');
+
 const conexion = new Sequelize(
-    'mdy_apps', 'postgres', 'root', {
-        host: 'localhost',
+    'mdyDB', 'mdy', 'qazWSX123456', {
+        host: '192.168.1.3',
         dialect: 'postgres',
         port: 5432
     }
 );
+// const conexion = new Sequelize(
+//     'mdy_apps', 'postgres', 'root', {
+//         host: 'localhost',
+//         dialect: 'postgres',
+//         port: 5432
+//     }
+// );
 
 const Persona = personaModel(conexion);
 const LibroIncidencias = libroIncidenciasModel(conexion);
@@ -45,6 +47,7 @@ const Mascota = mascotaModel(conexion);
 const PropietarioMascota = propietarioMascotaModel(conexion);
 const Comportamiento = comportamientoModel(conexion);
 const ComportamientoMascota = comportamientoMascotaModel(conexion);
+const Observacion = observacionModel(conexion);
 
 Entidad.hasMany(Sede, {foreignKey: 'idEntidad'});
 Sede.hasMany(LibroIncidencias, {foreignKey: 'idSede'});
@@ -68,6 +71,9 @@ Mascota.belongsToMany(Persona, { through: PropietarioMascota, foreignKey: 'idMas
 Mascota.belongsToMany(Comportamiento, { through: ComportamientoMascota, foreignKey: 'idMascota'});
 Comportamiento.belongsToMany(Mascota, { through: ComportamientoMascota, foreignKey: 'idComportamiento'});
 
+Mascota.belongsToMany(Observacion, { through: 'MascotaObservacion', foreignKey: 'idMascota' });
+Observacion.belongsToMany(Mascota, { through: 'MascotaObservacion', foreignKey: 'idObservacion' });
+
 module.exports = {
     Persona: Persona,
     LibroIncidencias: LibroIncidencias,
@@ -84,5 +90,6 @@ module.exports = {
     Comportamiento,
     Mascota,
     PropietarioMascota,
-    ComportamientoMascota
+    ComportamientoMascota,
+    Observacion
 }
