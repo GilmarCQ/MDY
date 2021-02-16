@@ -25,6 +25,11 @@ const observacion_model = conexion => {
             fechaEmision: {
                 type: sequelize.DATEONLY,
                 allowNull: true
+            },
+            estadoSubsanacion: {
+                type: sequelize.TEXT,
+                allowNull: false,
+                defaultValue: 'POR SUBSANAR'
             }
         },
         {
