@@ -17,7 +17,26 @@ const getPerson = (req, res) => {
             contenido: error
         }))
 }
+const actualizarCredencial = (req, res) => {
+    const body = req.query;
+    // console.log(body);
+    axios.get(`${URL_API_RENIEC}/ActualizarCredencial?` +
+        `credencialAnterior=${body.credencialAnterior}&credencialNueva=${body.credencialNueva}` +
+        `&nuDni=${body.nuDni}&nuRuc=${body.nuRuc}`)
+    .then(response => {
+        res.status(200).json({
+            ok: true,
+            contenido: response.data
+        })
+    })
+    .catch(error =>
+        res.status(500).json({
+            ok: false,
+            contenido: error
+        }))
+}
 
 module.exports = {
-    getPerson
+    getPerson,
+    actualizarCredencial
 }
