@@ -6,6 +6,7 @@ const cors = require('cors');
 const { reniecRouter } = require('../routes/Reniec');
 const { inpeRouter } = require('../routes/Inpe');
 const { mineduRouter } = require('../routes/Minedu');
+const { suneduRouter } = require('../routes/Sunedu');
 const { sunarpRouter } = require('../routes/Sunarp');
 const { entidadRouter } = require('../routes/Entidad');
 const { sedeRouter } = require('../routes/Sede');
@@ -47,6 +48,7 @@ class Server {
         this.app.use('/reniec', reniecRouter);
         this.app.use('/inpe', inpeRouter);
         this.app.use('/minedu', mineduRouter);
+        this.app.use('/sunedu', suneduRouter);
         this.app.use('/sunarp', sunarpRouter);
         this.app.use('/entidad', entidadRouter);
         this.app.use('/sede', sedeRouter);
@@ -62,7 +64,7 @@ class Server {
     }
     start() {
         this.app.listen(this.puerto, () => console.log(`Todo operativo en el puerto ${this.puerto}`));
-        conexion.sync({alter: true, force: false}).then(() => {
+        conexion.sync({alter: false, force: false}).then(() => {
             console.log("Base de Datos Sincronizada")
         })
     }
