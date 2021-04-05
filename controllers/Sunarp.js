@@ -3,7 +3,7 @@ const URL_API_SUNARP = 'https://ws3.pide.gob.pe/Rest/Sunarp';
 
 const getPJRazonSocial = (req, res) => {
     const body = req.query;
-    axios.get(`${URL_API_SUNARP}/PJRazonSocial?razonSocial=${body.nombre}&out=json`)
+    axios.get(`${URL_API_SUNARP}/PJRazonSocial?razonSocial=${body.nombre}&out=${body.out}`)
         .then(response => {
             res.status(200).json({
                 ok: true,
@@ -19,7 +19,7 @@ const getPJRazonSocial = (req, res) => {
 const getPersona = (req, res) => {
     const body = req.query;
     // console.log(`${URL_API_SUNARP}/Titularidad?tipoParticipante=${body.tipo}&apellidoPaterno=${body.apPat}&apellidoMaterno=${body.apMat}&nombres=${body.nombres}&razonSocial=${body.razonSocial}`);
-    axios.get(`${URL_API_SUNARP}/Titularidad?tipoParticipante=${body.tipo}&apellidoPaterno=${body.apPat}&apellidoMaterno=${body.apMat}&nombres=${body.nombres}&razonSocial=${body.razonSocial}&out=json`)
+    axios.get(`${URL_API_SUNARP}/Titularidad?tipoParticipante=${body.tipo}&apellidoPaterno=${body.apPat}&apellidoMaterno=${body.apMat}&nombres=${body.nombres}&razonSocial=${body.razonSocial}&out=${body.out}`)
         .then(response => {
             res.status(200).json({
                 ok: true,
@@ -34,7 +34,7 @@ const getPersona = (req, res) => {
 }
 const getOficinas = (req, res) => {
     const body = req.query;
-    axios.get(`${URL_API_SUNARP}/Oficinas&out=json`)
+    axios.get(`${URL_API_SUNARP}/Oficinas&out=${body.out}`)
         .then(response => {
             res.status(200).json({
                 ok: true,
@@ -49,7 +49,7 @@ const getOficinas = (req, res) => {
 }
 const getAsientos = (req, res) => {
     const body = req.query;
-    axios.get(`${URL_API_SUNARP}/ListarAsientos?zona=${body.zona}&oficina=${body.oficina}&partida=${body.partida}&registro=${body.registro}&out=json`)
+    axios.get(`${URL_API_SUNARP}/ListarAsientos?zona=${body.zona}&oficina=${body.oficina}&partida=${body.partida}&registro=${body.registro}&out=${body.out}`)
         .then(response => {
             res.status(200).json({
                 ok: true,
@@ -64,7 +64,7 @@ const getAsientos = (req, res) => {
 }
 const getAsiento = (req, res) => {
     const body = req.query;
-    axios.get(`${URL_API_SUNARP}/VerAsientos?transaccion=${body.transaccion}&idImg=${body.idImg}&tipo=${body.tipo}&nroTotalPag=${body.totalPag}&nroPagRef=${body.pagRef}&pagina=${body.pagina}&out=json`)
+    axios.get(`${URL_API_SUNARP}/VerAsientos?transaccion=${body.transaccion}&idImg=${body.idImg}&tipo=${body.tipo}&nroTotalPag=${body.totalPag}&nroPagRef=${body.pagRef}&pagina=${body.pagina}&out=${body.out}`)
         .then(response => {
             res.status(200).json({
                 ok: true,
@@ -79,7 +79,7 @@ const getAsiento = (req, res) => {
 }
 const getVehiculo = (req, res) => {
     const body = req.query;
-    axios.get(`${URL_API_SUNARP}/VerDetalleRPV?zona=${body.zona}&oficina=${body.oficina}&placa=${body.placa}&out=json`)
+    axios.get(`${URL_API_SUNARP}/VerDetalleRPV?zona=${body.zona}&oficina=${body.oficina}&placa=${body.placa}&out=${body.out}`)
         .then(response => {
             res.status(200).json({
                 ok: true,
