@@ -34,7 +34,7 @@ const getPersona = (req, res) => {
 }
 const getOficinas = (req, res) => {
     const body = req.query;
-    axios.get(`${URL_API_SUNARP}/Oficinas&out=${body.out}`)
+    axios.get(`${URL_API_SUNARP}/Oficinas?out=${body.out}`)
         .then(response => {
             res.status(200).json({
                 ok: true,
@@ -64,6 +64,7 @@ const getAsientos = (req, res) => {
 }
 const getAsiento = (req, res) => {
     const body = req.query;
+    console.log(`${URL_API_SUNARP}/VerAsientos?transaccion=${body.transaccion}&idImg=${body.idImg}&tipo=${body.tipo}&nroTotalPag=${body.totalPag}&nroPagRef=${body.pagRef}&pagina=${body.pagina}&out=${body.out}`);
     axios.get(`${URL_API_SUNARP}/VerAsientos?transaccion=${body.transaccion}&idImg=${body.idImg}&tipo=${body.tipo}&nroTotalPag=${body.totalPag}&nroPagRef=${body.pagRef}&pagina=${body.pagina}&out=${body.out}`)
         .then(response => {
             res.status(200).json({
